@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'singnup.dart';
 
-import 'constants.dart';
+import '../constants.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
