@@ -11,6 +11,9 @@ class Signin extends StatefulWidget {
 }
 
 class _SigninState extends State<Signin> {
+  final _loginFormKey = GlobalKey<FormState>();
+  String? _email, _password;
+
   @override
   Widget build(BuildContext context) {
     var conheight = MediaQuery.of(context).size.height;
@@ -75,114 +78,126 @@ class _SigninState extends State<Signin> {
                               color: whyte1,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                //Email Field
-                                Text(
-                                  "Email",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  height: conheight * .01,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(left: 10),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 1,
-                                        color: Colors.black,
-                                      ),
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: TextField(
+                            child: Form(
+                              key: _loginFormKey,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  //Email Field
+                                  TextFormField(
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter an email';
+                                      } else if (!value.contains('@')) {
+                                        return 'Please enter a valid email';
+                                      }
+                                      return null;
+                                    },
+                                    onSaved: (value) => _email = value,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 1, color: Colors.black),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 1, color: Colors.black),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
                                       prefixIcon: Icon(
                                         Icons.email_outlined,
                                         color: violy1,
                                       ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: conheight * .03,
-                                ),
-                                Text(
-                                  "password",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  height: conheight * .01,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(left: 10),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      width: 1,
-                                      color: Colors.black,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
+                                  SizedBox(
+                                    height: conheight * .03,
                                   ),
-                                  child: TextField(
+                                  //Password Field
+                                  TextFormField(
+                                    obscureText: true,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter a password';
+                                      } else if (value.length < 8) {
+                                        return 'Please enter a password with at least 8 characters';
+                                      }
+                                      return null;
+                                    },
+                                    onSaved: (value) => _password = value,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 1, color: Colors.black),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 1, color: Colors.black),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
                                       prefixIcon: Icon(
                                         Icons.password_outlined,
                                         color: violy1,
                                       ),
                                     ),
-                                    obscureText: true,
                                   ),
-                                ),
-                                SizedBox(
-                                  height: conheight * .01,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    TextButton(
-                                      onPressed: () {},
-                                      child: Text(
-                                        "Forgot Password ?",
-                                        style: TextStyle(color: Colors.red),
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => Singup()),
-                                        );
-                                      },
-                                      child: Text("Create an account. "),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: conheight * .01,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    ElevatedButtonTheme(
-                                      data: kElevatedButtonStyle,
-                                      child: ElevatedButton(
+                                  SizedBox(
+                                    height: conheight * .01,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      TextButton(
                                         onPressed: () {},
-                                        child: Text("Login"),
+                                        child: Text(
+                                          "Forgot Password ?",
+                                          style: TextStyle(color: Colors.red),
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => Singup()),
+                                          );
+                                        },
+                                        child: Text("Create an account. "),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: conheight * .01,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ElevatedButtonTheme(
+                                        data: kElevatedButtonStyle,
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            if (_loginFormKey.currentState!
+                                                .validate()) {
+                                              _loginFormKey.currentState!
+                                                  .save();
+                                              // Login logic here
+                                              print(
+                                                  'Email: $_email, Password: $_password');
+                                            }
+                                          },
+                                          child: Text("Login"),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

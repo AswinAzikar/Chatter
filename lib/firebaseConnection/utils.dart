@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:chatter/services/auth_services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
 import 'firebase_options.dart';
@@ -12,7 +13,5 @@ Future<void> setupFirebase() async {
 
 Future<void> registerServices() async {
   final GetIt getIt = GetIt.asNewInstance();
-  getIt.registerSingleton(
-   AuthService();
-  );
+  getIt.registerSingleton(AuthService());
 }
