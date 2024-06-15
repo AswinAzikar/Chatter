@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'firebaseConnection/utils.dart';
 import 'home.dart';
+import 'pages/signin.dart';
 
 void main() async {
   await setup();
@@ -10,6 +11,7 @@ void main() async {
 Future<void> setup() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupFirebase();
+  await registerServices();
 }
 
 class MyApp extends StatelessWidget {
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Home(),
+      home: Signin(),
     );
   }
 }
