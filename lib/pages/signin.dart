@@ -1,3 +1,4 @@
+import 'package:chatter/consts_logics.dart';
 import 'package:flutter/material.dart';
 import 'singnup.dart';
 
@@ -89,7 +90,8 @@ class _SigninState extends State<Signin> {
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'Please enter an email';
-                                      } else if (!value.contains('@')) {
+                                      } else if (!EMAIL_VALIDATION_REGEX
+                                          .hasMatch(value)) {
                                         return 'Please enter a valid email';
                                       }
                                       return null;
@@ -122,10 +124,12 @@ class _SigninState extends State<Signin> {
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'Please enter a password';
-                                      } else if (value.length < 8) {
-                                        return 'Please enter a password with at least 8 characters';
+                                      } else if (!PASSWORD_VALIDATION_REGEX
+                                          .hasMatch(value)) {
+                                        return 'Please enter a valid paasssword';
                                       }
                                       return null;
+                                      //validation
                                     },
                                     onSaved: (value) => _password = value,
                                     decoration: InputDecoration(
