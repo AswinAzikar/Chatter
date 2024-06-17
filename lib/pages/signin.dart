@@ -1,6 +1,8 @@
 import 'package:chatter/consts_logics.dart';
+import 'package:chatter/pages/singnup.dart';
+import 'package:chatter/services/auth_services.dart';
 import 'package:flutter/material.dart';
-import 'singnup.dart';
+import 'package:get_it/get_it.dart';
 
 import '../constants.dart';
 
@@ -14,6 +16,14 @@ class Signin extends StatefulWidget {
 class _SigninState extends State<Signin> {
   final _loginFormKey = GlobalKey<FormState>();
   String? _email, _password;
+  final GetIt _getIt = GetIt.instance;
+  late AuthService _authService;
+
+  @override
+  void initState() {
+    super.initState();
+    _authService = _getIt<AuthService>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +95,7 @@ class _SigninState extends State<Signin> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  //Email Field
+                                  // Email Field
                                   TextFormField(
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
@@ -99,6 +109,7 @@ class _SigninState extends State<Signin> {
                                     onSaved: (value) => _email = value,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
+                                      labelText: 'Email',
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
                                             width: 1, color: Colors.black),
@@ -115,10 +126,8 @@ class _SigninState extends State<Signin> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: conheight * .03,
-                                  ),
-                                  //Password Field
+                                  SizedBox(height: conheight * 0.03),
+                                  // Password Field
                                   TextFormField(
                                     obscureText: true,
                                     validator: (value) {
@@ -126,14 +135,14 @@ class _SigninState extends State<Signin> {
                                         return 'Please enter a password';
                                       } else if (!PASSWORD_VALIDATION_REGEX
                                           .hasMatch(value)) {
-                                        return 'Please enter a valid paasssword';
+                                        return 'Please enter a valid password';
                                       }
                                       return null;
-                                      //validation
                                     },
                                     onSaved: (value) => _password = value,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
+                                      labelText: 'Password',
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
                                             width: 1, color: Colors.black),
@@ -145,14 +154,12 @@ class _SigninState extends State<Signin> {
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       prefixIcon: Icon(
-                                        Icons.password_outlined,
+                                        Icons.lock_outline,
                                         color: violy1,
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: conheight * .01,
-                                  ),
+                                  SizedBox(height: conheight * 0.01),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -160,7 +167,7 @@ class _SigninState extends State<Signin> {
                                       TextButton(
                                         onPressed: () {},
                                         child: Text(
-                                          "Forgot Password ?",
+                                          "Forgot Password?",
                                           style: TextStyle(color: Colors.red),
                                         ),
                                       ),
@@ -169,33 +176,42 @@ class _SigninState extends State<Signin> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => Singup()),
+                                                builder: (context) => Signup()),
                                           );
                                         },
-                                        child: Text("Create an account. "),
+                                        child: Text("Create an account."),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(
-                                    height: conheight * .01,
-                                  ),
+                                  SizedBox(height: conheight * 0.01),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      ElevatedButtonTheme(
-                                        data: kElevatedButtonStyle,
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                            if (_loginFormKey.currentState!
-                                                .validate()) {
-                                              _loginFormKey.currentState!
-                                                  .save();
-                                              // Login logic here
-                                              print(
-                                                  'Email: $_email, Password: $_password');
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: violy2,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                        onPressed: () async {
+                                          if (_loginFormKey.currentState!
+                                              .validate()) {
+                                            _loginFormKey.currentState!.save();
+                                            bool result = await _authService
+                                                .login(_email!, _password!);
+                                            print(result);
+                                            if (result) {
+                                              // Navigate to the next screen or show success message
+                                            } else {
+                                              // Show error message
                                             }
-                                          },
-                                          child: Text("Login"),
+                                          }
+                                        },
+                                        child: Text(
+                                          "Login",
+                                          style: TextStyle(color: whyte1),
                                         ),
                                       ),
                                     ],
@@ -205,7 +221,7 @@ class _SigninState extends State<Signin> {
                             ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

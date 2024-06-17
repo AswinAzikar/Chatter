@@ -1,17 +1,14 @@
+import 'package:chatter/pages/singnup.dart';
 import 'package:flutter/material.dart';
 import 'firebaseConnection/utils.dart';
 import 'home.dart';
 import 'pages/signin.dart';
 
 void main() async {
-  await setup();
-  runApp(MyApp());
-}
-
-Future<void> setup() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupFirebase();
   await registerServices();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -22,6 +19,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Signin(),
+      routes: {
+        '/signin': (context) => Signin(),
+        '/signup': (context) => Signup(),
+        '/home': (context) => Home(),
+      },
     );
   }
 }

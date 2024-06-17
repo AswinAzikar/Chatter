@@ -1,16 +1,21 @@
+import 'package:chatter/pages/signin.dart';
+import 'package:chatter/services/auth_services.dart';
 import 'package:flutter/material.dart';
-import 'signin.dart';
-
 import '../constants.dart';
 
-class Singup extends StatefulWidget {
-  const Singup({super.key});
+class Signup extends StatefulWidget {
+  const Signup({super.key});
 
   @override
-  State<Singup> createState() => _SingupState();
+  State<Signup> createState() => _SignupState();
 }
 
-class _SingupState extends State<Singup> {
+class _SignupState extends State<Signup> {
+  final _formKey = GlobalKey<FormState>();
+  late String _email, _password;
+  late String _confirmPassword;
+  late String _name;
+
   @override
   Widget build(BuildContext context) {
     var conheight = MediaQuery.of(context).size.height;
@@ -42,7 +47,7 @@ class _SingupState extends State<Singup> {
                   child: Column(
                     children: [
                       Text(
-                        "Singup",
+                        "Signup",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -51,7 +56,7 @@ class _SingupState extends State<Singup> {
                       ),
                       Center(
                         child: Text(
-                          'create your Account',
+                          'Create your Account',
                           style: TextStyle(
                             color: whyte2,
                             fontSize: 18,
@@ -75,179 +80,138 @@ class _SingupState extends State<Singup> {
                               color: whyte1,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Name",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  height: conheight * .01,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(left: 10),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      width: 1,
-                                      color: Colors.black,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: TextField(
+                            child: Form(
+                              key: _formKey,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  TextFormField(
                                     decoration: InputDecoration(
-                                      border: InputBorder.none,
+                                      labelText: "Name",
                                       prefixIcon: Icon(
                                         Icons.verified_user_sharp,
                                         color: violy1,
                                       ),
                                     ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "Please enter your name";
+                                      }
+                                      return null;
+                                    },
+                                    onSaved: (value) => _name = value!,
                                   ),
-                                ),
-                                SizedBox(
-                                  height: conheight * .03,
-                                ),
-                                //Email Field
-                                Text(
-                                  "Email",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  height: conheight * .01,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(left: 10),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      width: 1,
-                                      color: Colors.black,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: TextField(
+                                  // Email field
+                                  TextFormField(
                                     decoration: InputDecoration(
-                                      border: InputBorder.none,
+                                      labelText: "Email",
                                       prefixIcon: Icon(
                                         Icons.email_outlined,
                                         color: violy1,
                                       ),
                                     ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "Please enter your email";
+                                      }
+                                      return null;
+                                    },
+                                    onSaved: (value) => _email = value!,
                                   ),
-                                ),
-                                SizedBox(
-                                  height: conheight * .03,
-                                ),
-                                //pasword fieldobscureText: true,
-                                Text(
-                                  "password",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  height: conheight * .01,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(left: 10),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      width: 1,
-                                      color: Colors.black,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: TextField(
+                                  // Password field
+                                  TextFormField(
+                                    obscureText: true,
                                     decoration: InputDecoration(
-                                      border: InputBorder.none,
+                                      labelText: "Password",
                                       prefixIcon: Icon(
                                         Icons.password_rounded,
                                         color: violy1,
                                       ),
                                     ),
+                                    validator: (value) {
+                                      if (value == null || value.length < 8) {
+                                        return "Password must be at least 8 characters";
+                                      }
+                                      return null;
+                                    },
+                                    onSaved: (value) => _password = value!,
+                                  ),
+                                  // Confirm Password field
+                                  TextFormField(
                                     obscureText: true,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: conheight * .03,
-                                ),
-
-                                Text(
-                                  "Confirm Password",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  height: conheight * .01,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(left: 10),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      width: 1,
-                                      color: Colors.black,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: TextField(
                                     decoration: InputDecoration(
-                                      border: InputBorder.none,
+                                      labelText: "Confirm Password",
                                       prefixIcon: Icon(
                                         Icons.password_outlined,
                                         color: violy1,
                                       ),
                                     ),
+                                    validator: (value) {
+                                      if (value != _password) {
+                                        return "Passwords do not match";
+                                      }
+                                      return null;
+                                    },
+                                    onSaved: (value) =>
+                                        _confirmPassword = value!,
                                   ),
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => Signin(),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => Signin(),
+                                            ),
+                                          );
+                                        },
+                                        child: Text(
+                                          "Already have an account?",
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: conheight * .05,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: violy2,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                           ),
-                                        );
-                                      },
-                                      child: Text(
-                                        "Already have an account ?",
-                                        style: TextStyle(color: Colors.red),
+                                        ),
+                                        onPressed: () {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            _formKey.currentState!.save();
+                                            // Call the AuthService to sign up
+                                            AuthService()
+                                                .signup(_email, _password);
+                                          }
+                                        },
+                                        child: Text(
+                                          "Sign up",
+                                          style: TextStyle(color: whyte1),
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: conheight * .01,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    ElevatedButtonTheme(
-                                      data: kElevatedButtonStyle,
-                                      child: ElevatedButton(
-                                        onPressed: () {},
-                                        child: Text("Login"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
